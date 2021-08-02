@@ -1,0 +1,2 @@
+[![Build Status](https://app.travis-ci.com/k-r-3/job4j_cinema.svg?branch=main)](https://app.travis-ci.com/k-r-3/job4j_cinema)
+[![codecov](https://codecov.io/gh/k-r-3/job4j_cinema/branch/master/graph/badge.svg?token=SJ9U3ETNBB)](https://codecov.io/gh/k-r-3/job4j_cinema)
