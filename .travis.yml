@@ -1,0 +1,26 @@
+language: java
+
+jdk:
+  - openjdk15
+
+services :
+  - postgresql
+
+before_install:
+  - psql -c 'create database cinema;' -U postgres
+
+sudo: false
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+
+notifications:
+  email:
+    recipients:
+      - rke19922802@gmail.com
+    on_success: never # default: change
+    on_failure: always # default: always
+
+env:
+  global:
+    -CODECOV_TOKEN="91763f66-d793-4906-9f1a-4b4aaf220219"
