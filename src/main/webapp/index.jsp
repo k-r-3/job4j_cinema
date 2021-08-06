@@ -53,7 +53,7 @@
 <div class="container">
     <div class="row pt-3">
         <h4>
-            Бронирование месте на сеанс
+            Бронирование мест на сеанс
         </h4>
         <table class="table table-bordered">
             <thead>
@@ -141,6 +141,7 @@
                 <button type="submit" class="btn btn-success" onclick="ticketCreate()">Оплатить</button>
             </div>
             </tbody>
+            <caption>${error}</caption>
         </table>
     </div>
 </div>

@@ -23,7 +23,7 @@
 </head>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script>
-    $(document).ready(function (){
+    $(document).ready(function () {
         $.ajax({
             type: 'GET',
             url: 'http://localhost:8080/cinema/pay',
@@ -42,9 +42,12 @@
             url: 'http://localhost:8080/cinema/pay',
             data: JSON.stringify({
                 name: $('#username').val(),
-                phone: $('#phone').val(),
-                email: $('#email').val()
+                email: $('#email').val(),
+                phone: $('#phone').val()
             })
+        }).fail(function (err) {
+            alert('вы используете чужие данные!')
+            window.location.href = 'http://localhost:8080/cinema/'
         })
     }
 </script>

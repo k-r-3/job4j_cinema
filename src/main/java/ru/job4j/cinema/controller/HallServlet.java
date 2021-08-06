@@ -11,18 +11,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Enumeration;
 
 public class HallServlet extends HttpServlet {
     private static final Gson GSON = new GsonBuilder().create();
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Place place = GSON.fromJson(req.getReader(), Place.class);
+        System.out.println(PlaceService.getPlaceById(Integer.parseInt(place.getName())).getStatus());
         if (PlaceService.getPlaceById(Integer.parseInt(place.getName())).getStatus()) {
             HttpSession sc = req.getSession();
             sc.setAttribute("place", place);

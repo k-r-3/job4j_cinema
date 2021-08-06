@@ -22,7 +22,8 @@ CREATE TABLE ticket
     session_id INT NOT NULL,
     row        INT NOT NULL,
     cell       INT NOT NULL,
-    account_id INT NOT NULL REFERENCES account (id)
+    account_id INT NOT NULL REFERENCES account (id),
+    UNIQUE (session_id, row, cell)
 );
 
 INSERT INTO place(id, row, cell, price) values(11, 1, 1, 200);

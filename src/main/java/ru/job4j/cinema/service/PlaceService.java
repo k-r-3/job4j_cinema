@@ -11,10 +11,17 @@ public class PlaceService {
         return Storage.instOf().findOccupiedPlace();
     }
 
-    public static boolean takeThePlaseOf(Place place, int sessionId) {
+    public static void takeThePlaseOf(Place place, int sessionId) {
         System.out.println("takeThePlaseOf");
-        return Storage.instOf().changePlaceStatus(place, sessionId);
+        Storage.instOf().changePlaceStatus(place, sessionId);
     }
+
+    public static void releaseThisPlace(Place place) {
+        System.out.println("place name is " + place.getName());
+        Storage.instOf().changePlaceStatus(place, Integer.parseInt(place.getName()));
+    }
+
+
 
     public static Place getPlaceById(int id) {
         System.out.println("getPlaceById");
