@@ -136,7 +136,33 @@ public class Storage {
         }
     }
 
+    public Optional<Account> findAccByEmail(Account account) {
+        Account found = null;
+        try (Connection cn = pool.getConnection();
+             PreparedStatement statement = cn.prepareStatement("SELECT * FROM account "
+                     + "WHERE email = ?")
+        ) {
+            statement.setString(1, account.getEmail());
+            try (ResultSet result = statement.executeQuery()) {
+                while (result.next()) {
+                    found = new Account();
+                    found.setId(result.getInt("id"));
+                    found.setName(result.getString("username"));
+                    found.setEmail(result.getString("email"));
+                    found.setPhone(result.getString("phone"));
+                }
+            }
+        } catch (SQLException e) {
+            LOG.debug("find account by email exception", e);
+        }
+        return Optional.ofNullable(found);
+    }
+
     public Account saveAccount(Account account) {
+        Optional<Account> found = findAccByEmail(account);
+        if (found.isPresent() && account.equals(found.get())) {
+            return found.get();
+        }
         Account withId = account;
         System.out.println("saveAccount start");
         try (Connection cn = pool.getConnection();
@@ -156,7 +182,7 @@ public class Storage {
             System.out.println("save acc end");
         } catch (SQLException e) {
             Set<ConstraintViolation<String>> set = new HashSet<>();
-            throw new ConstraintViolationException(set);
+            throw new ConstraintViolationException("вы используете чужие данные!", set);
         }
         return withId;
     }
@@ -177,6 +203,7 @@ public class Storage {
         } catch (SQLException e) {
             LOG.debug("check account exception", e);
         }
+        System.out.println("check acc " + account.equals(base));
         return account.equals(base);
     }
 
@@ -199,7 +226,7 @@ public class Storage {
             System.out.println("save ticket end");
         } catch (SQLException e) {
             Set<ConstraintViolation<String>> set = new HashSet<>();
-            throw new ConstraintViolationException(set);
+            throw new ConstraintViolationException("билет уже продан!", set);
         }
         return withId;
     }
@@ -217,5 +244,27 @@ public class Storage {
         return check;
     }
 
-
+    public Collection<TicketWithName> showTicket(int ticketId) {
+        List<TicketWithName> list = new ArrayList<>();
+        try (Connection cn = pool.getConnection();
+             PreparedStatement stat = cn.prepareStatement("SELECT a.username, t.row, t.cell, t.session_id FROM account a "
+             + "JOIN ticket t ON t.account_id = a.id "
+             + "WHERE a.id = (select ticket.account_id from ticket where ticket.id = ?)")
+        ) {
+            stat.setInt(1, ticketId);
+            try (ResultSet result = stat.executeQuery()) {
+                while (result.next()) {
+                    TicketWithName ticket = new TicketWithName();
+                    ticket.setName(result.getString("username"));
+                    ticket.setRow(result.getInt("row"));
+                    ticket.setCell(result.getInt("cell"));
+                    ticket.setSession(result.getInt("session_id"));
+                    list.add(ticket);
+                }
+            }
+        } catch (SQLException e) {
+            LOG.debug("show ticket exception", e);
+        }
+        return list;
+    }
 }

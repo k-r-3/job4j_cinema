@@ -26,6 +26,19 @@
 </head>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script>
+    const host = document.URL.slice(0, 21);
+    console.log(host);
+    $(document).ready(function () {
+        $.ajax({
+            type: 'GET',
+            url: 'http://localhost:8080/cinema/hall',
+            dataType: 'json'
+        }).done(function (data) {
+            for (var place of data) {
+                document.getElementById(place.name).disabled = true;
+            }
+        })
+    })
     function ticketCreate() {
         var forms = document.getElementsByClassName("form-check-input"),
             dot;
@@ -42,7 +55,7 @@
                 name: $(dot).attr('value')
             })
         }).done(function () {
-            window.location.href = 'http://localhost:8080/cinema/payment.html'
+            window.location.href = host + '/cinema/payment.html'
         }).fail(function (err) {
             console.log(err);
         })
@@ -69,21 +82,21 @@
                 <th>1</th>
                 <td>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="place" value="11"
+                        <input class="form-check-input" type="radio" name="place" id="11" value="11"
                                checked>
                         Ряд 1, Место 1
                     </div>
                 </td>
                 <td>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="place" value="12"
+                        <input class="form-check-input" type="radio" name="place" id="12" value="12"
                                checked>
                         Ряд 1, Место 2
                     </div>
                 </td>
                 <td>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="place" value="13"
+                        <input class="form-check-input" type="radio" name="place" id="13" value="13"
                                checked>
                         Ряд 1, Место 3
                     </div>
@@ -93,21 +106,21 @@
                 <th>2</th>
                 <td>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="place" value="21"
+                        <input class="form-check-input" type="radio" name="place" id="21" value="21"
                                checked>
                         Ряд 2, Место 1
                     </div>
                 </td>
                 <td>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="place" value="22"
+                        <input class="form-check-input" type="radio" name="place" id="22" value="22"
                                checked>
                         Ряд 2, Место 2
                     </div>
                 </td>
                 <td>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="place" value="23"
+                        <input class="form-check-input" type="radio" name="place" id="23" value="23"
                                checked>
                         Ряд 2, Место 3
                     </div>
@@ -117,32 +130,31 @@
                 <th>3</th>
                 <td>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="place" value="31"
+                        <input class="form-check-input" type="radio" name="place" id="31" value="31"
                                checked>
                         Ряд 3, Место 1
                     </div>
                 </td>
                 <td>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="place" value="32"
+                        <input class="form-check-input" type="radio" name="place" id="32" value="32"
                                checked>
                         Ряд 3, Место 2
                     </div>
                 </td>
                 <td>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="place" value="33"
+                        <input class="form-check-input" type="radio" name="place" id="33" value="33"
                                checked>
                         Ряд 3, Место 3
                     </div>
                 </td>
             </tr>
-            <div class="row float-right">
-                <button type="submit" class="btn btn-success" onclick="ticketCreate()">Оплатить</button>
-            </div>
             </tbody>
-            <caption>${error}</caption>
         </table>
+    </div>
+    <div class="row float-right">
+        <button type="submit" class="btn btn-success" onclick="ticketCreate()">Оплатить</button>
     </div>
 </div>
 </body>

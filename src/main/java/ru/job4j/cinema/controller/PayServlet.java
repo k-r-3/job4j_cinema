@@ -28,7 +28,11 @@ private static final Gson GSON = new GsonBuilder().create();
         HttpSession sc = req.getSession();
         Place place = (Place) sc.getAttribute("place");
         int id = Integer.parseInt(place.getName());
-        String json = GSON.toJson(PlaceService.placeForJson(id));
+        out(PlaceService.placeForJson(id), resp);
+    }
+
+    private void out(Object src, HttpServletResponse resp) throws IOException {
+        String json = GSON.toJson(src);
         OutputStream output = resp.getOutputStream();
         output.write(json.getBytes(StandardCharsets.UTF_8));
         output.flush();
@@ -48,18 +52,17 @@ private static final Gson GSON = new GsonBuilder().create();
             ticket.setCell(place.getCell());
             ticket.setAccountId(account.getId());
             Ticket ticketWithId = TicketService.saveTicket(ticket);
+            out(ticketWithId, resp);
         } catch (ConstraintViolationException e) {
             if (!AccountService.checkAccount(account)) {
                 System.out.println("acc check");
                 System.out.println(e.getMessage());
                 PlaceService.releaseThisPlace(place);
-                req.setAttribute("msg", "вы используете чужие данные!");
                 resp.sendError(400, e.getMessage());
             } else if (!TicketService.isFree(ticket)) {
                 System.out.println("tick check");
                 System.out.println(e.getMessage());
                 PlaceService.releaseThisPlace(place);
-                req.setAttribute("msg", "место занято!");
                 resp.sendError(400, e.getMessage());
             }
         }

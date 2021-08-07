@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        a {
+            margin-top: 20px;
+            margin-left: 20px;
+        }
+    </style>
+    <link rel="stylesheet" href="ticket.css">
+    <title>Кинотеатр</title>
+</head>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        const urlMsg = new URLSearchParams(window.location.search);
+        const ticket_id = urlMsg.get('msg');
+        $.ajax({
+            type: 'GET',
+            url: 'http://localhost:8080/cinema/show',
+            data: 'ticket_id=' + ticket_id,
+            dataType: 'json'
+        }).done(function (data) {
+            for (var item of data) {
+                console.log(data);
+                console.log(item.name);
+                $('#text').append('<p>' + 'Имя : ' + item.name + '<br>'
+                    + ' Ряд : ' + item.row + '<br>' +
+                    ' Место : ' + item.cell + '</p>');
+            }
+        }).fail(function (err) {
+            console.log(err);
+        })
+    })
+</script>
+<body>
+
+<div class="container pt-3">
+    <h4>
+        <a>Ваши билеты : </a>
+    </h4>
+    <div class="ticket">
+
+        <div class="illustration">
+            <div class="spikes">
+                <div class="spike"></div>
+                <div class="spike"></div>
+                <div class="spike"></div>
+                <div class="spike"></div>
+                <div class="spike"></div>
+                <div class="spike"></div>
+                <div class="spike"></div>
+                <div class="spike"></div>
+                <div class="spike"></div>
+            </div>
+            <div class="new-label">КОНТРОЛЬ</div>
+        </div>
+
+        <div class="ornament">
+            <div class="ornament__sharp"></div>
+            <div class="ornament__cut ornament__cut--1"></div>
+            <div class="ornament__cut ornament__cut--2"></div>
+            <div class="ornament__tail"></div>
+            <div class="content" id="text">
+            </div>
+        </div>
+
+    </div>
+    <div class="mb-auto p-1">
+        <a id="linkToMain" href="http://localhost:8080/cinema/">На главную</a>
+    </div>
+</div>
+</body>
+</html>

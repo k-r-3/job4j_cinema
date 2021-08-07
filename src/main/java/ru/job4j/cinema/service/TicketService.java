@@ -2,6 +2,8 @@ package ru.job4j.cinema.service;
 
 import ru.job4j.cinema.repository.Storage;
 import ru.job4j.cinema.repository.Ticket;
+import ru.job4j.cinema.repository.TicketWithName;
+import java.util.Collection;
 
 public class TicketService {
 
@@ -11,5 +13,9 @@ public class TicketService {
 
     public static boolean isFree(Ticket ticket) {
         return Storage.instOf().isFree(ticket);
+    }
+
+    public static Collection<TicketWithName> showTicket(int ticketId) {
+        return Storage.instOf().showTicket(ticketId);
     }
 }

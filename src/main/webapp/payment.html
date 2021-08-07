@@ -23,6 +23,7 @@
 </head>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script>
+    const host = document.URL.slice(0, 21);
     $(document).ready(function () {
         $.ajax({
             type: 'GET',
@@ -44,10 +45,13 @@
                 name: $('#username').val(),
                 email: $('#email').val(),
                 phone: $('#phone').val()
-            })
-        }).fail(function (err) {
-            alert('вы используете чужие данные!')
-            window.location.href = 'http://localhost:8080/cinema/'
+            }),
+            dataType: 'json'
+        }).done(function (data) {
+            window.location.href = host + '/cinema/ticket.html?msg=' + data.id
+        }).fail(function () {
+            alert('ошибка!');
+            window.location.href = host + '/cinema/'
         })
     }
 </script>
@@ -78,4 +82,10 @@
     </div>
 </div>
 </body>
+<div class="row" id="linkToMain">
+
+</div>
+<div class="mr-auto p-3">
+    <a href="index.jsp">На главную</a>
+</div>
 </html>
