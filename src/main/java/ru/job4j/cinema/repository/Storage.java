@@ -3,6 +3,10 @@ package ru.job4j.cinema.repository;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.job4j.cinema.models.Account;
+import ru.job4j.cinema.models.Place;
+import ru.job4j.cinema.models.Ticket;
+import ru.job4j.cinema.models.TicketWithName;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -159,8 +163,8 @@ public class Storage {
         }
         Account withId = account;
         try (Connection cn = pool.getConnection();
-             PreparedStatement stat = cn.prepareStatement("INSERT INTO account (username, email, phone) "
-                     + "VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS)
+             PreparedStatement stat = cn.prepareStatement("INSERT INTO account "
+                     + "(username, email, phone) VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS)
         ) {
             stat.setString(1, account.getName());
             stat.setString(2, account.getEmail());
@@ -181,7 +185,8 @@ public class Storage {
     public boolean checkAccount(Account account) {
         Account base = new Account();
         try (Connection cn = pool.getConnection();
-             PreparedStatement stat = cn.prepareStatement("SELECT * FROM account a WHERE a.email = ?")
+             PreparedStatement stat = cn.prepareStatement("SELECT * FROM account a "
+                     + "WHERE a.email = ?")
         ) {
             stat.setString(1, account.getEmail());
             try (ResultSet result = stat.executeQuery()) {
@@ -200,7 +205,8 @@ public class Storage {
     public Ticket saveTicket(Ticket ticket) {
         Ticket withId = new Ticket();
         try (Connection cn = pool.getConnection();
-             PreparedStatement stat = cn.prepareStatement("INSERT INTO ticket (session_id, row, cell, account_id) "
+             PreparedStatement stat = cn.prepareStatement("INSERT INTO "
+                     + "ticket (session_id, row, cell, account_id) "
                      + "VALUES (?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS)
         ) {
             stat.setInt(1, 0);
@@ -223,7 +229,8 @@ public class Storage {
     public boolean isFree(Ticket ticket) {
         boolean check = true;
         try (Connection cn = pool.getConnection();
-             PreparedStatement stat = cn.prepareStatement("SELECT * FROM ticket t WHERE t.account_id = ?")
+             PreparedStatement stat = cn.prepareStatement("SELECT * FROM ticket t "
+                     + "WHERE t.account_id = ?")
         ) {
             stat.setInt(1, ticket.getAccountId());
             check = stat.execute();
@@ -236,7 +243,9 @@ public class Storage {
     public Collection<TicketWithName> showTicket(int ticketId) {
         List<TicketWithName> list = new ArrayList<>();
         try (Connection cn = pool.getConnection();
-             PreparedStatement stat = cn.prepareStatement("SELECT a.username, t.row, t.cell, t.session_id FROM account a "
+             PreparedStatement stat = cn.prepareStatement("SELECT a.username, t.row, t.cell, "
+                     + "t.session_id "
+                     + "FROM account a "
                      + "JOIN ticket t ON t.account_id = a.id "
                      + "WHERE a.id = (select ticket.account_id from ticket where ticket.id = ?)")
         ) {

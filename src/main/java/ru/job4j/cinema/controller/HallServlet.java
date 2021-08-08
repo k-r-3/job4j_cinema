@@ -2,10 +2,10 @@ package ru.job4j.cinema.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import ru.job4j.cinema.repository.Place;
+import ru.job4j.cinema.models.Place;
 import ru.job4j.cinema.service.PlaceService;
 
-import javax.servlet.ServletException;
+import javax.servlet.annotation.WebInitParam;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,7 +19,7 @@ public class HallServlet extends HttpServlet {
     private static final Gson GSON = new GsonBuilder().create();
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Collection<Place> occupied = PlaceService.occupiedPlace();
         resp.setContentType("application/json; charset=utf-8");
         OutputStream out = resp.getOutputStream();

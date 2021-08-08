@@ -2,14 +2,13 @@ package ru.job4j.cinema.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import ru.job4j.cinema.repository.Account;
-import ru.job4j.cinema.repository.Place;
-import ru.job4j.cinema.repository.Ticket;
+import ru.job4j.cinema.models.Account;
+import ru.job4j.cinema.models.Place;
+import ru.job4j.cinema.models.Ticket;
 import ru.job4j.cinema.service.AccountService;
 import ru.job4j.cinema.service.PlaceService;
 import ru.job4j.cinema.service.TicketService;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,7 +17,6 @@ import javax.validation.ConstraintViolationException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.Optional;
 
 public class PayServlet extends HttpServlet {
     private static final Gson GSON = new GsonBuilder().create();
@@ -41,7 +39,7 @@ public class PayServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Account account = GSON.fromJson(req.getReader(), Account.class);
         Place place = (Place) req.getSession().getAttribute("place");
         place = PlaceService.getPlaceById(Integer.parseInt(place.getName()));

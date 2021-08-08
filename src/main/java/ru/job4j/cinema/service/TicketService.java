@@ -1,8 +1,8 @@
 package ru.job4j.cinema.service;
 
 import ru.job4j.cinema.repository.Storage;
-import ru.job4j.cinema.repository.Ticket;
-import ru.job4j.cinema.repository.TicketWithName;
+import ru.job4j.cinema.models.Ticket;
+import ru.job4j.cinema.models.TicketWithName;
 import java.util.Collection;
 
 public class TicketService {

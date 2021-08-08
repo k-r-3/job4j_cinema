@@ -2,10 +2,9 @@ package ru.job4j.cinema.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import ru.job4j.cinema.repository.TicketWithName;
+import ru.job4j.cinema.models.TicketWithName;
 import ru.job4j.cinema.service.TicketService;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,7 +17,7 @@ public class ShowServlet extends HttpServlet {
     private static final Gson GSON = new GsonBuilder().create();
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         int id = Integer.parseInt(req.getParameter("ticket_id"));
         Collection<TicketWithName> tickets = TicketService.showTicket(id);
         resp.setContentType("application/json; charset=utf-8");

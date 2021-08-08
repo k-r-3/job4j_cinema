@@ -1,6 +1,6 @@
 package ru.job4j.cinema.service;
 
-import ru.job4j.cinema.repository.Place;
+import ru.job4j.cinema.models.Place;
 import ru.job4j.cinema.repository.Storage;
 
 import java.util.*;
@@ -18,7 +18,6 @@ public class PlaceService {
     public static void releaseThisPlace(Place place) {
         Storage.instOf().changePlaceStatus(place, Integer.parseInt(place.getName()));
     }
-
 
     public static Place getPlaceById(int id) {
         return Storage.instOf().findById(id);
