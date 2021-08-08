@@ -18,9 +18,10 @@ import javax.validation.ConstraintViolationException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 
 public class PayServlet extends HttpServlet {
-private static final Gson GSON = new GsonBuilder().create();
+    private static final Gson GSON = new GsonBuilder().create();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -54,14 +55,7 @@ private static final Gson GSON = new GsonBuilder().create();
             Ticket ticketWithId = TicketService.saveTicket(ticket);
             out(ticketWithId, resp);
         } catch (ConstraintViolationException e) {
-            if (!AccountService.checkAccount(account)) {
-                System.out.println("acc check");
-                System.out.println(e.getMessage());
-                PlaceService.releaseThisPlace(place);
-                resp.sendError(400, e.getMessage());
-            } else if (!TicketService.isFree(ticket)) {
-                System.out.println("tick check");
-                System.out.println(e.getMessage());
+            if (!AccountService.checkAccount(account) || !TicketService.isFree(ticket)) {
                 PlaceService.releaseThisPlace(place);
                 resp.sendError(400, e.getMessage());
             }

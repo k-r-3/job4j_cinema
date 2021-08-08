@@ -25,9 +25,11 @@
     <title>Кинотеатр</title>
 </head>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<%
+response.setIntHeader("Refresh", 60);
+%>
 <script>
     const host = document.URL.slice(0, 21);
-    console.log(host);
     $(document).ready(function () {
         $.ajax({
             type: 'GET',
@@ -39,7 +41,7 @@
             }
         })
     })
-    function ticketCreate() {
+    function ticketCreation() {
         var forms = document.getElementsByClassName("form-check-input"),
             dot;
         for (var i = 0; i < forms.length; i++) {
@@ -154,7 +156,7 @@
         </table>
     </div>
     <div class="row float-right">
-        <button type="submit" class="btn btn-success" onclick="ticketCreate()">Оплатить</button>
+        <button type="submit" class="btn btn-success" onclick="ticketCreation()">Оплатить</button>
     </div>
 </div>
 </body>

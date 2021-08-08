@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
-import java.util.Enumeration;
+import java.util.Optional;
 
 public class HallServlet extends HttpServlet {
     private static final Gson GSON = new GsonBuilder().create();
@@ -33,12 +33,11 @@ public class HallServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Place place = GSON.fromJson(req.getReader(), Place.class);
-        System.out.println(PlaceService.getPlaceById(Integer.parseInt(place.getName())).getStatus());
-        if (PlaceService.getPlaceById(Integer.parseInt(place.getName())).getStatus()) {
+        Place status = (PlaceService.getPlaceById(Integer.parseInt(place.getName())));
+        if (status.getStatus()) {
             HttpSession sc = req.getSession();
             sc.setAttribute("place", place);
-            System.out.println("hallServlet");
-            System.out.println(place);
+            place = PlaceService.getPlaceById(Integer.parseInt(place.getName()));
             PlaceService.takeThePlaseOf(place, Integer.parseInt(place.getName()));
         }
     }

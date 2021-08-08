@@ -248,8 +248,8 @@ public class Storage {
         List<TicketWithName> list = new ArrayList<>();
         try (Connection cn = pool.getConnection();
              PreparedStatement stat = cn.prepareStatement("SELECT a.username, t.row, t.cell, t.session_id FROM account a "
-             + "JOIN ticket t ON t.account_id = a.id "
-             + "WHERE a.id = (select ticket.account_id from ticket where ticket.id = ?)")
+                     + "JOIN ticket t ON t.account_id = a.id "
+                     + "WHERE a.id = (select ticket.account_id from ticket where ticket.id = ?)")
         ) {
             stat.setInt(1, ticketId);
             try (ResultSet result = stat.executeQuery()) {

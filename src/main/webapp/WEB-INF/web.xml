@@ -22,6 +22,10 @@
     <servlet-name>ShowServlet</servlet-name>
     <servlet-class>ru.job4j.cinema.controller.ShowServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>ReleaseServlet</servlet-name>
+    <servlet-class>ru.job4j.cinema.controller.ReleaseServlet</servlet-class>
+  </servlet>
 
   <servlet-mapping>
     <servlet-name>HallServlet</servlet-name>
@@ -34,6 +38,10 @@
   <servlet-mapping>
     <servlet-name>ShowServlet</servlet-name>
     <url-pattern>/show</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ReleaseServlet</servlet-name>
+    <url-pattern>/release</url-pattern>
   </servlet-mapping>
 
   <filter>
