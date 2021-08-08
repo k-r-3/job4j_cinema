@@ -16,7 +16,6 @@ public class PlaceService {
     }
 
     public static void releaseThisPlace(Place place) {
-        System.out.println("release");
         Storage.instOf().changePlaceStatus(place, Integer.parseInt(place.getName()));
     }
 

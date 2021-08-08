@@ -43,7 +43,6 @@ public class Storage {
 
     public Optional<Place> findPlaceBySession(int sessionId) {
         Place place = null;
-        System.out.println("findPlaceBySession session id:" + sessionId);
         try (Connection cn = pool.getConnection();
              PreparedStatement statement = cn.prepareStatement("SELECT * FROM place "
                      + "WHERE user_session = ?")
@@ -63,7 +62,6 @@ public class Storage {
             LOG.debug("find Place by session exception", e);
         }
         Optional<Place> optional = Optional.ofNullable(place);
-        System.out.println(optional.isPresent());
         return optional;
     }
 
@@ -86,7 +84,6 @@ public class Storage {
         } catch (SQLException e) {
             LOG.debug("find Place by id exception", e);
         }
-        System.out.println("status from db " + place.getStatus());
         return place;
     }
 
@@ -112,11 +109,9 @@ public class Storage {
     }
 
     public void changePlaceStatus(Place place, int sessionId) {
-        System.out.println("place name " + place.getName());
         boolean status = true;
         int userSession = 0;
         Optional<Place> placeForUpdate = findPlaceBySession(sessionId);
-        System.out.println("placeForUpdate present? " + placeForUpdate.isPresent());
         if (!placeForUpdate.isPresent()) {
             status = false;
             userSession = sessionId;
@@ -130,7 +125,6 @@ public class Storage {
             statement.setInt(2, userSession);
             statement.setInt(3, Integer.parseInt(place.getName()));
             statement.execute();
-            System.out.println("change complete");
         } catch (SQLException e) {
             LOG.debug("change Place Status", e);
         }
@@ -164,7 +158,6 @@ public class Storage {
             return found.get();
         }
         Account withId = account;
-        System.out.println("saveAccount start");
         try (Connection cn = pool.getConnection();
              PreparedStatement stat = cn.prepareStatement("INSERT INTO account (username, email, phone) "
                      + "VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS)
@@ -174,12 +167,10 @@ public class Storage {
             stat.setString(3, account.getPhone());
             stat.execute();
             try (ResultSet result = stat.getGeneratedKeys()) {
-                System.out.println("save acc resultset");
                 if (result.next()) {
                     withId.setId(result.getInt(1));
                 }
             }
-            System.out.println("save acc end");
         } catch (SQLException e) {
             Set<ConstraintViolation<String>> set = new HashSet<>();
             throw new ConstraintViolationException("вы используете чужие данные!", set);
@@ -203,7 +194,6 @@ public class Storage {
         } catch (SQLException e) {
             LOG.debug("check account exception", e);
         }
-        System.out.println("check acc " + account.equals(base));
         return account.equals(base);
     }
 
@@ -223,7 +213,6 @@ public class Storage {
                     withId.setId(result.getInt(1));
                 }
             }
-            System.out.println("save ticket end");
         } catch (SQLException e) {
             Set<ConstraintViolation<String>> set = new HashSet<>();
             throw new ConstraintViolationException("билет уже продан!", set);
