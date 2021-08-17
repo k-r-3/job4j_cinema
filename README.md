@@ -62,3 +62,6 @@ This configuration should have follow points :
 '/cinema' as application context
 </li>
 </ul>
+<h3>Contact</h3>
+<p>If You have any question, please contact me:</p>
+<p>https://t.me/roman_kozlov</p>
